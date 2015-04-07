@@ -37,6 +37,19 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
 )
 
+if DEBUG is False:
+    INSTALLED_APPS += (
+        'opbeat.contrib.django',
+    )
+    MIDDLEWARE_CLASSES = (
+        'opbeat.contrib.django.middleware.OpbeatAPMMiddleware',
+    ) + MIDDLEWARE_CLASSES
+    OPBEAT = {
+        'ORGANIZATION_ID': '864843a361be418a9b1a976ce173db3a',
+        'APP_ID': '641bc5b317',
+        'SECRET_TOKEN': os.environ.get('OPBEAT_SECRET', ''),
+    }
+
 ROOT_URLCONF = 'tastytaps.urls'
 
 TEMPLATES = [
