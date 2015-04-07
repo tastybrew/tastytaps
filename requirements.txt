@@ -1,15 +1,15 @@
-Django==1.8b1
+Django==1.8
 dj-database-url==0.3.0
-gunicorn==19.1.1
+gunicorn==19.3.0
 Jinja2==2.7.3
 MarkupSafe==0.23
-psycopg2==2.5.4
+psycopg2==2.6
 
 # Opbeat
 opbeat==2.1
 
 # Flake8 and dependencies
-flake8==2.3.0
+flake8==2.4.0
 mccabe==0.3
 pep8==1.6.2
 pyflakes==0.8.1
