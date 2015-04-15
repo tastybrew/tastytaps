@@ -41,6 +41,7 @@ This project requires the following environment variables. Adjust as
 needed::
 
     # Add to your $VIRTUAL_ENV/bin/postactivate file.
+    export DJANGO_SETTINGS_MODULE=tastytaps.settings
     export DJANGO_DEBUG='true'  # Defaults to False if unset.
     export DJANGO_SECRET='<your django secret>'
     export DATABASE_URL='postgres://tastytaps:tastytaps@localhost:5432/tastytaps'
@@ -48,6 +49,7 @@ needed::
 Make sure to clear the settings when leaving the virtualenv::
 
     # Add to your $VIRTUAL_ENV/bin/predeactivate file.
+    unset DJANGO_SETTINGS_MODULE
     unset DJANGO_DEBUG
     unset DJANGO_SECRET
     unset DATABASE_URL
