@@ -55,3 +55,9 @@ Make sure to clear the settings when leaving the virtualenv::
 Once the virtualenv and environment variables are set up, set up the
 Django database and runserver as you would for any Django project.
 
+To quickly set up a PostgreSQL role and database::
+
+    # Enter password after the following. Use 'tastytaps' if using the
+    # above DATABASE_URL.
+    $ createuser --createdb --pwprompt --no-superuser --no-createrole tastytaps
+    $ createdb --owner=tastytaps tastytaps
