@@ -5,13 +5,13 @@ from django.contrib.auth.models import User
 from rest_framework.reverse import reverse
 from rest_framework.test import APIClient, APITestCase
 
-from tastytaps.taps.models import Price, Taps
+from tastytaps.taps.models import Beer, Price
 
 
-class TestTapsViewSet(APITestCase):
+class TestBeerViewSet(APITestCase):
 
     def setUp(self):
-        super(TestTapsViewSet, self).setUp()
+        super(TestBeerViewSet, self).setUp()
         credentials = {
             'username': 'tester',
             'password': 'password',
@@ -31,23 +31,23 @@ class TestTapsViewSet(APITestCase):
             ],
         }
 
-    def _make_tap(self):
+    def _make_beer(self):
         data = self.data.copy()
         prices = data.pop('prices')
-        tap = Taps.objects.create(**data)
+        beer = Beer.objects.create(**data)
         for price in prices:
-            Price.objects.create(tap=tap, **price)
-        return tap
+            Price.objects.create(beer=beer, **price)
+        return beer
 
     def test_unauthenticated(self):
-        url = reverse('v1:taps-list')
+        url = reverse('v1:beer-list')
         self.client.force_authenticate(user=None)
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 403)
 
     def test_get(self):
-        tap = self._make_tap()
-        url = reverse('v1:taps-detail', args=[tap.id])
+        beer = self._make_beer()
+        url = reverse('v1:beer-detail', args=[beer.id])
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
         for key in self.data.keys():
@@ -56,7 +56,7 @@ class TestTapsViewSet(APITestCase):
                                  key, resp.data[key]))
 
     def test_create(self):
-        url = reverse('v1:taps-list')
+        url = reverse('v1:beer-list')
         resp = self.client.post(url, self.data, format='json')
         self.assertEqual(resp.status_code, 201)
 
@@ -69,8 +69,8 @@ class TestTapsViewSet(APITestCase):
                                  key, data[key]))
 
     def test_update(self):
-        tap = self._make_tap()
-        url = reverse('v1:taps-detail', args=[tap.id])
+        beer = self._make_beer()
+        url = reverse('v1:beer-detail', args=[beer.id])
         new_data = self.data.copy()
         # Update summary, remove Pint option, and increase glass price.
         new_data.update({
@@ -86,13 +86,13 @@ class TestTapsViewSet(APITestCase):
             self.assertEqual(data[key], new_data[key],
                              'Unexpected value for key:%s: %s' % (
                                  key, new_data[key]))
-        self.assertEqual(tap.prices.count(), 1)
+        self.assertEqual(beer.prices.count(), 1)
 
     def test_delete(self):
-        tap = self._make_tap()
-        url = reverse('v1:taps-detail', args=[tap.id])
+        beer = self._make_beer()
+        url = reverse('v1:beer-detail', args=[beer.id])
         resp = self.client.delete(url)
         self.assertEqual(resp.status_code, 204)
-        with self.assertRaises(Taps.DoesNotExist):
-            Taps.objects.get(id=tap.id)
+        with self.assertRaises(Beer.DoesNotExist):
+            Beer.objects.get(id=beer.id)
         self.assertEqual(Price.objects.count(), 0)

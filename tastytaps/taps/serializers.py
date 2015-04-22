@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Price, Taps
+from .models import Beer, Price
 
 
 class PriceSerializer(serializers.ModelSerializer):
@@ -9,25 +9,25 @@ class PriceSerializer(serializers.ModelSerializer):
         fields = ('size', 'price')
 
 
-class TapsSerializer(serializers.ModelSerializer):
+class BeerSerializer(serializers.ModelSerializer):
     prices = PriceSerializer(many=True)
 
     class Meta:
-        model = Taps
+        model = Beer
 
     def create(self, data):
         prices = data.pop('prices')
-        tap = Taps.objects.create(**data)
+        beer = Beer.objects.create(**data)
         for price in prices:
-            Price.objects.create(tap=tap, **price)
-        return tap
+            Price.objects.create(beer=beer, **price)
+        return beer
 
-    def update(self, tap, data):
+    def update(self, beer, data):
         prices = data.pop('prices')
         for k, v in data.items():
-            setattr(tap, k, v)
-        tap.prices.all().delete()
+            setattr(beer, k, v)
+        beer.prices.all().delete()
         for price in prices:
-            Price.objects.create(tap=tap, **price)
-        tap.save()
-        return tap
+            Price.objects.create(beer=beer, **price)
+        beer.save()
+        return beer

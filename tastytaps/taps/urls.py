@@ -4,7 +4,7 @@ from . import views
 
 
 router = routers.SimpleRouter()
-router.register(r'taps', views.TapsViewSet)
+router.register(r'beers', views.BeersViewSet)
 
 
 urlpatterns = router.urls
