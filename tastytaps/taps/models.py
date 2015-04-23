@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Taps(models.Model):
+class Beer(models.Model):
     name = models.CharField(max_length=200)
     summary = models.TextField()
     description = models.TextField(blank=True)
@@ -23,7 +23,7 @@ class Taps(models.Model):
 
 
 class Price(models.Model):
-    tap = models.ForeignKey(Taps, related_name='prices')
+    beer = models.ForeignKey(Beer, related_name='prices')
     size = models.CharField(max_length=25)
     price = models.DecimalField(max_digits=5, decimal_places=2)
     # TODO: Add image for glassware for display.

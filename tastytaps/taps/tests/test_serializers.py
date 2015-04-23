@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from django.test import TestCase
 
-from tastytaps.taps.models import Taps
-from tastytaps.taps.serializers import TapsSerializer
+from tastytaps.taps.models import Beer
+from tastytaps.taps.serializers import BeerSerializer
 
 
-class TestTapsSerializer(TestCase):
+class TestBeerSerializer(TestCase):
     def setUp(self):
-        super(TestTapsSerializer, self).setUp()
+        super(TestBeerSerializer, self).setUp()
 
         self.data = {
             'name': 'Duchesse de Bourgogne',
@@ -22,7 +22,7 @@ class TestTapsSerializer(TestCase):
         }
 
     def serializer(self, data=None):
-        return TapsSerializer(data=data or self.data)
+        return BeerSerializer(data=data or self.data)
 
     def test_serialize(self):
         serializer = self.serializer()
@@ -41,8 +41,8 @@ class TestTapsSerializer(TestCase):
 
     def test_name(self):
         del self.data['prices']
-        taps = Taps(**self.data)
-        serializer = TapsSerializer(instance=taps)
+        beer = Beer(**self.data)
+        serializer = BeerSerializer(instance=beer)
         self.assertEqual(serializer.data['name'], u'Duchesse de Bourgogne')
 
     def test_price_not_string(self):
