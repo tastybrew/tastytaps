@@ -30,3 +30,18 @@ class Price(models.Model):
 
     def __unicode__(self):
         return self.size
+
+
+class Taproom(models.Model):
+    name = models.CharField(max_length=200)
+    num_taps = models.PositiveSmallIntegerField()
+    address = models.TextField(blank=True)
+
+    def __unicode__(self):
+        return self.name
+
+
+class Taps(models.Model):
+    beer = models.ForeignKey(Beer)
+    taproom = models.ForeignKey(Taproom, related_name='taps')
+    tap_number = models.PositiveSmallIntegerField()
